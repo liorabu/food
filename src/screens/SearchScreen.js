@@ -3,11 +3,22 @@ import { View, Text, Stylesheet } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import useResults from '../hooks/useResults';
 import ResultsList from '../components/ResultsList';
+// import { I18nManager } from 'react-native';
 
 const SearchScreen = () => {
+    // useEffect(()=>{
+    //     I18nManager.forceRTL(true);
+    // });
     const [term, setTerm] = useState('');
     const [searchApi, results, errorMessage] = useResults();
+   
+  
+    const filterResultsByPrice = (price) => {
+        return results.filter(results=>{
+            return results.price === price;
+        })
 
+    };
 
 return <View>
     <SearchBar
@@ -17,9 +28,9 @@ return <View>
     />
     {errorMessage ? <Text>{errorMessage}</Text> : null}
     <Text>we have found {results.length} results</Text>
-    {/* <ResultsList title="Cost Effective"/>
-    <ResultsList title="Bit Pricier"/>
-    <ResultsList title="Big Spender"/> */}
+    <ResultsList results={filterResultsByPrice('$')} title="Cost Effective"/>
+    <ResultsList results={filterResultsByPrice('$$')} title="Bit Pricier"/>
+    <ResultsList results={filterResultsByPrice('$$$')} title="Big Spender"/>
 </View>
 }
 
